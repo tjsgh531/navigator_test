@@ -50,6 +50,8 @@ class DrawPath{
         }
         else{
             this.drawTools.addPolyline(this.preLat, this.preLon, lat, lon, 2, "#34C900"); 
+            this.preLat = lat;
+            this.preLon = lon;
         }
     }
       
