@@ -1,5 +1,9 @@
 export class DrawShape{
-    constructor(map){
+    constructor(){
+
+    }
+    
+    setMap(map){
         this.map = map;
     }
 

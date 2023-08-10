@@ -6,37 +6,53 @@ import { InitMap } from "./initmap.js";
 class DrawPath{
     constructor(){
         this.currentPos = new CurrentPos();
-        this.maptool = new InitMap()
+        this.maptool = new InitMap();
+        this.drawTools = new DrawShape();
         
         this.maptool.createTmap().then((map)=>{
-
             this.map = map;
-            this.drawTools = new DrawShape(this.map);
+            this.drawTools.setMap(map);
        
             this.centerCircle, this.preLat, this.preLon;
                 
-            this.currentPos.watchLocation().then((newLocation)=>{     
-                console.log("계속 반복 되겄지?");           
-                this.drawCenter(newLocation.latitude, newLocation.longitude);
-                this.drawLine(newLocation.latitude, newLocation.longitude);
-            });
-                
+            this.watchLocation();
            
         });
 
     }
 
+    watchLocation(){
+        if (navigator.geolocation) {
+            this.watchid = navigator.geolocation.watchPosition((position)=>{
+                const currentLocation = {
+                    latitude : position.coords.latitude,
+                    longitude : position.coords.longitude,  
+                }
+                this.drawCenter(currentLocation.latitude, currentLocation.longitude);
+                this.drawLine(currentLocation.latitude, currentLocation.longitude);
+            }, ()=>{
+                console.error(`ERROR(${err.code}): ${err.message}`);
+            }, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0,
+            });
+        }
+
+    }
 
     drawCenter(lat, lon){
+        console.log(lat, lon);
         if(this.centerCircle){
             this.centerCircle = this.drawTools.moveCircle(this.centerCircle, lat, lon);
         }
         
         else{
             console.log("원 그려!");
-            this.centerCircle = this.drawTools.addCircle(lat, lon, 4, 4, "#cccccc");
+            console.log(lat, lon);
+            console.log(this.map);
+            this.centerCircle = this.drawTools.addCircle(lat, lon, 10, 1, "#34C900");
         }
-        
     }
 
     drawLine(lat, lon){
