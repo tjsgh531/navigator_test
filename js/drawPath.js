@@ -14,15 +14,14 @@ class DrawPath{
             this.drawTools = new DrawShape(this.map);
        
             this.centerCircle, this.preLat, this.preLon;
-            
-            setInterval(()=>{
                 
-                this.currentPos.getLocation().then((newLocation)=>{                
-                    this.drawCenter(newLocation.latitude, newLocation.longitude);
-                    this.drawLine(newLocation.latitude, newLocation.longitude)
-                });
+            this.currentPos.watchLocation().then((newLocation)=>{     
+                console.log("계속 반복 되겄지?");           
+                this.drawCenter(newLocation.latitude, newLocation.longitude);
+                this.drawLine(newLocation.latitude, newLocation.longitude);
+            });
                 
-            },1000);
+           
         });
 
     }
